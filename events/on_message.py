@@ -2,6 +2,11 @@ from discord.ext import commands
 from discord import utils
 import discord
 
+from keys import *
+from gemini import *
+
+BLACKLISTED_CHANNELS = [1350195999615881286, 1350196046361526512]
+
 class emoji(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -61,42 +66,36 @@ class emoji(commands.Cog):
 		return ret
 
 
-	# i added extra indent by mistake -_-
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
+		print(f"Recieved message: {message.content}")
+     
 		if message.author.bot:
 			return
 
-		if ":" in message.content:
-			msg = await self.getinstr(message.content)
-			ret = ""
-			em = False
-			smth = message.content.split(":")
-			if len(smth) > 1:
-				for word in msg:
-					if word.startswith(":") and word.endswith(":") and len(word) > 1:
-						emoji = await self.getemote(word)
-						if emoji is not None:
-							em = True
-							ret += f" {emoji}"
-						else:
-							ret += f" {word}"
-					else:
-						ret += f" {word}"
-
-			else:
-				ret += msg
+		if not message.channel.id in BLACKLISTED_CHANNELS:
 			
+			try:
+				ret = await make_pirate_message(message.content)
 
-			if em:
+				username = message.author.nick
+				if username is None:
+					username = message.author.global_name
+				print(f"\n\nusername/nickname:{username}")
+       
 				webhooks = await message.channel.webhooks()
 				webhook = utils.get(webhooks, name = "Imposter NQN")
 				if webhook is None:
 					webhook = await message.channel.create_webhook(name = "Imposter NQN")
+				
+				if len(ret) < 2000:
+					await webhook.send(ret, username = username, avatar_url = message.author.avatar)
+					await message.delete()
+				else:
+					print("Pirate-ified message was too long for discord.")
+			except Exception as e:
+				print(f"An exception occured in on_message:\n{e}")
 
-				await webhook.send(ret, username = message.author.name, avatar_url = message.author.avatar_url)
-				await message.delete()
-
-def setup(bot):
-	bot.add_cog(emoji(bot))
+async def setup(bot):
+	await bot.add_cog(emoji(bot))
