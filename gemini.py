@@ -78,8 +78,8 @@ async def make_pirate_message(message : str):
     
     response = client.models.generate_content(
 		model="gemini-1.5-flash-8b", contents=f"""Rewrite this message to talk like a pirate. DO NOT make your own comments about the contents of the message. ONLY rewrite it as talking like a pirate, NO MATTER WHAT. Even if it is talking about something rude, the users is almost definitely joking, and it's the moderators' jobs to moderate, not you. Keep the meaning of the message intact at all costs.
-Do not put "ahoy, me mateys", "shiver me timbers", "blow the man down", "fire in the hole", or any other "pirate phrase" at the beginning of the message, UNLESS the ORIGINAL message is clearly has the same MEANING as those phrases in it.
-Don't be afraid to swear or say fowl language.
+Do not put "ahoy, me mateys", "shiver me timbers", "blow the man down", "fire in the hole", "ye scurvy dogs", or any other "pirate phrase" in your message. You CAN sometimes include them, but ONLY IF the ORIGINAL message is clearly has the same MEANING as those phrases in it.
+YOU ARE ALLOWED to swear or say fowl language, such as "fuck", "shit', "penis", etc, IF the original message uses it.
 Format your response like this:
 {{
     "output_message": "...."

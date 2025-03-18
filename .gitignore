@@ -1,4 +1,5 @@
 keys.py
+requests_so_far.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
