@@ -55,8 +55,12 @@ async def make_pirate_message(message : str):
             f.write("0")
     else:
         with open("requests_so_far.txt", 'r') as f:
-            MESSAGES_SO_FAR = int(f.read())
-    
+            content = f.read()
+            if content.isdigit():
+                MESSAGES_SO_FAR = int(content)
+            else:
+                MESSAGES_SO_FAR = 0
+                
     cur_api_key = math.floor(MESSAGES_SO_FAR % (len(GEMINI_API_KEYS) - 1) - 1)
     if cur_api_key >= len(GEMINI_API_KEYS):
         raise Exception("Ran out of Gemini API keys :(")
