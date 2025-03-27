@@ -91,7 +91,7 @@ Format your response like this:
 
 If you see a part of the message that looks like: <@(SOME NUMBER)> or <#(SOME NUMBER)>, make sure it is preserved in the final message.
 If you see an emoji, ALSO PLEASE INCLUDE THAT EXACT EMOJI. Do NOT make it more pirate-like. For example, DO NOT change pride flags to pirate flags!
-
+If you see something like <:Emote_Name:857197070767226892>, INCLUDE THAT UNMODIFIED AS WELL!
 ALSO, please preserve any URLS you see, like ones starting with https:// or http://
 ESPECIALLY be sure to preserve things like: https://tenor.com/view/[NAME OF FILE].gif
 

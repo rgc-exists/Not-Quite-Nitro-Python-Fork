@@ -66,7 +66,26 @@ class emoji(commands.Cog):
 
 		return ret
 
+	async def apply_emotes(self, message):
+		msg = await self.getinstr(message)
+		ret = ""
+		em = False
+		smth = message.split(":")
+		if len(smth) > 1:
+			for word in msg:
+				if word.startswith(":") and word.endswith(":") and len(word) > 1:
+					emoji = await self.getemote(word)
+					if emoji is not None:
+						em = True
+						ret += f" {emoji}"
+					else:
+						ret += f" {word}"
+				else:
+					ret += f" {word}"
 
+		else:
+			ret += msg
+		return ret
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
@@ -85,7 +104,8 @@ class emoji(commands.Cog):
 				if len(message.content.strip()) <= 0:
 					return
 				ret = await make_pirate_message(message.content)
-
+				ret = await self.apply_emotes(ret)
+    
 			username = message.author.nick or message.author.global_name
 
 			print(f"\n\nusername/nickname:{username}")
