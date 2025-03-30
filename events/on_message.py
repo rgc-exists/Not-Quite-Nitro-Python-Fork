@@ -2,6 +2,7 @@ from urllib.parse import urlparse
 from discord.ext import commands
 from discord import utils
 import discord
+from random import random
 
 from keys import *
 from gemini import *
@@ -11,6 +12,7 @@ WHITELISTED_CHANNELS = [1351276068656644096]
 class emoji(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
+		self.chance = 0.0
 
 	async def getemote(self, arg):
 		emoji = utils.get(self.bot.emojis, name = arg.strip(":"))
@@ -86,13 +88,23 @@ class emoji(commands.Cog):
 		else:
 			ret += msg
 		return ret
-
+	
+	@commands.has_guild_permissions(manage_channels=True)
+	@commands.command()
+	async def setchance(self, ctx: commands.Context, chance: commands.Range[float, 0.0, 1.0]):
+		if ctx.channel.id in WHITELISTED_CHANNELS:
+			return
+		self.chance = chance
+		await ctx.reply(f"Set chance to {self.chance}")
+		
 	@commands.Cog.listener()
 	async def on_message(self, message):
 		if message.author.bot:
 			return
-
+		
 		if message.channel.id in WHITELISTED_CHANNELS:
+			if random() > self.chance:
+				return
 			print(f"Recieved message: {message.content}")
 			try:
 				parsed = urlparse(message.content)
@@ -129,7 +141,7 @@ class emoji(commands.Cog):
 
 
 			if len(ret) < 1999:
-				await webhook.send(ret, username = username, avatar_url = message.author.avatar, files = files)
+				await webhook.send(ret, username = username, avatar_url = message.author.avatar, files = files, silent=True, allowed_mentions=discord.AllowedMentions(everyone=False, users=True, roles=False))
 
 				await message.delete()
 			else:
