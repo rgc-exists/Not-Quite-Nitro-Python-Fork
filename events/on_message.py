@@ -88,7 +88,24 @@ class emoji(commands.Cog):
 		else:
 			ret += msg
 		return ret
-	
+
+	@commands.command(name="say", 
+                      role="Admin", 
+                      help="Say something while being JonasFan",
+                      usage=".say (in channel) (replying to message) message")
+	@commands.has_guild_permissions(manage_channels=True)
+	async def say(self, ctx: commands.Context, channel: typing.Optional[discord.TextChannel], reply_to: typing.Optional[discord.Message], *, message: str):
+		await ctx.message.delete()
+
+		if reply_to:
+			await reply_to.reply(message)
+			return
+		if channel:
+			await channel.send(message)
+			return
+
+		await ctx.channel.send(message)
+        
 	@commands.has_guild_permissions(manage_channels=True)
 	@commands.command()
 	async def setchance(self, ctx: commands.Context, chance: commands.Range[float, 0.0, 1.0]):
