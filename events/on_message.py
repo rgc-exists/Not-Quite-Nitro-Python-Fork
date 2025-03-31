@@ -7,7 +7,7 @@ from random import random
 from keys import *
 from gemini import *
 
-WHITELISTED_CHANNELS = [1351276068656644096]
+WHITELISTED_CHANNELS = [1351276068656644096, 651545543432208405]
 
 class emoji(commands.Cog):
 	def __init__(self, bot):
