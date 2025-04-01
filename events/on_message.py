@@ -8,6 +8,8 @@ from keys import *
 from gemini import *
 
 WHITELISTED_CHANNELS = [1351276068656644096, 651545543432208405]
+ADMIN_ROLE = 651420679475822593
+
 
 class emoji(commands.Cog):
 	def __init__(self, bot):
@@ -93,7 +95,7 @@ class emoji(commands.Cog):
                       role="Admin", 
                       help="Say something while being JonasFan",
                       usage=".say (in channel) (replying to message) message")
-	@commands.has_guild_permissions(manage_channels=True)
+	@commands.has_role(ADMIN_ROLE)
 	async def say(self, ctx: commands.Context, channel: typing.Optional[discord.TextChannel], reply_to: typing.Optional[discord.Message], *, message: str):
 		await ctx.message.delete()
 
@@ -106,8 +108,9 @@ class emoji(commands.Cog):
 
 		await ctx.channel.send(message)
         
-	@commands.has_guild_permissions(manage_channels=True)
+ 
 	@commands.command()
+	@commands.has_role(ADMIN_ROLE)
 	async def setchance(self, ctx: commands.Context, chance: commands.Range[float, 0.0, 1.0]):
 		if ctx.channel.id in WHITELISTED_CHANNELS:
 			return
